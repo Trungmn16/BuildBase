@@ -132,4 +132,10 @@ public class JPTImpl implements JPT {
         }
     }
 
+    @Override
+    public <T> void findPaging(String query, String orderBy, Map<String, Object> map, int limit, int offset) {
+
+    }
+
+
 }
