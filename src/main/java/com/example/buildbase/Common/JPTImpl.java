@@ -2,10 +2,8 @@ package com.example.buildbase.Common;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.lang.reflect.Field;
+import java.sql.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -136,6 +134,30 @@ public class JPTImpl implements JPT {
     public <T> void findPaging(String query, String orderBy, Map<String, Object> map, int limit, int offset) {
 
     }
+    public void save(Object obj){
+        try {
+            getConnection();
+            Field[] fields = obj.getClass().getDeclaredFields();
+            String tableName = obj.getClass().getSimpleName();
+            StringBuilder columns = new StringBuilder();
+            StringBuilder values = new StringBuilder();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                columns.append(field.getName()).append(",");
+                values.append("'").append(field.get(obj)).append("',");
+            }
+            columns.setLength(columns.length() - 1);
+            values.setLength(values.length() - 1);
+            String sql = "INSERT INTO " + tableName + " (" + columns + ") VALUES (" + values + ")";
 
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
 }

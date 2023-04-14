@@ -1,9 +1,10 @@
 package com.example.buildbase.Common;
 
+//import org.springframework.data.repository.NoRepositoryBean;
+
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-
+//@NoRepositoryBean
 public  interface JPT {
      <T> void insert(String tableName, List<String> columns, List<T> values);
      <T> void insert(String tableName, Map<String, Object> map);
